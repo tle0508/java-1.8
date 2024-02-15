@@ -1,5 +1,9 @@
 package exercise02;
 
+import exercise02.EventSession.Lunch;
+import exercise02.EventSession.NetworkingEvent;
+import exercise02.EventSession.Session;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -8,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
 
-class SeminarSchedule {
+class ProcessSchedule {
     private static final int LUNCH_HOUR = 12;
     private static final int NETWORKING_HOUR = 16;
     private static final int NETWORKING_MINUTE = 0;
@@ -24,16 +28,15 @@ class SeminarSchedule {
     private DateTimeFormatter outputDateFormat = DateTimeFormatter
             .ofPattern("dd/MM/yyyy", new Locale("th", "TH"))
             .withChronology(ThaiBuddhistChronology.INSTANCE);
-    private DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("hh:mma");
 
-    SeminarSchedule(LocalDate localDate) {
+    ProcessSchedule(LocalDate localDate) {
         this.currentDate = localDate;
         this.scheduleTime = LocalTime.of(MORNING_SESSION_HOUR, MORNING_SESSION_MINUTE);
         this.dayCounter = 1;
     }
 
     void process(String line) {
-        if (line.matches("\\d{4}-\\d{2}-\\d{2}")) {
+        if (line.matches("\\w{4}-\\w{2}-\\w{2}")) {
             ShowDateLine(line);
         } else if (line.matches(".*\\d+min")) {
             ShowSessionLine(line);
@@ -46,10 +49,9 @@ class SeminarSchedule {
         try {
             currentDate = LocalDate.parse(line, inputDateFormat);
             if (isWeekend(currentDate)) {
-                System.out.println("วันนี้เป็นวันหยุด!");
-            } else {
-                System.out.println("Day " + dayCounter + " - " + currentDate.format(outputDateFormat) + " :");
+                currentDate = currentDate.plusDays(2);
             }
+            System.out.println("Day " + dayCounter + " - " + currentDate.format(outputDateFormat) + " :");
         } catch (DateTimeParseException e) {
             e.printStackTrace();
         }
@@ -58,34 +60,23 @@ class SeminarSchedule {
     private void ShowSessionLine(String line) {
         try {
             int duration = Integer.parseInt(line.replaceAll("\\D", ""));
-            printSession(line);
-            scheduleTime = scheduleTime.plusMinutes(duration);
-
+            Event event;
             if (scheduleTime.getHour() == LUNCH_HOUR) {
-                printLunch();
+                event = new Lunch(scheduleTime);
+                event.printDetail();
+                scheduleTime = LocalTime.of(AFTERNOON_SESSION_HOUR, AFTERNOON_SESSION_MINUTE);
             }
-
-            if (scheduleTime.getHour() >= NETWORKING_HOUR) {
-                printNetworkingEvent();
+            else if (scheduleTime.getHour() >= NETWORKING_HOUR) {
+                event = new NetworkingEvent(scheduleTime);
+                event.printDetail();
                 startNewDay();
             }
+            event = new Session(scheduleTime, line);
+            event.printDetail();
+            scheduleTime = scheduleTime.plusMinutes(duration);
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-    }
-
-    private void printSession( String line) {
-        String formattedTime = scheduleTime.format(timeFormat);
-        System.out.println(formattedTime +" "+ line );
-    }
-
-    private void printLunch() {
-        System.out.println(scheduleTime.format(timeFormat) + " Lunch");
-        scheduleTime = LocalTime.of(AFTERNOON_SESSION_HOUR, AFTERNOON_SESSION_MINUTE);
-    }
-
-    private void printNetworkingEvent() {
-        System.out.println(scheduleTime.format(timeFormat) + " Networking Event" + "\n");
     }
 
     private void startNewDay() {

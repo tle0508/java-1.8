@@ -8,15 +8,14 @@ import java.time.LocalDate;
 public class SeminarApp {
     public static void main(String[] args) {
         String filePath = "exercise02/input.txt";
+        ProcessSchedule processSchedule = new ProcessSchedule(LocalDate.now());
         try (
                 FileReader in = new FileReader(filePath);
                 BufferedReader bufferedReader = new BufferedReader(in);
         ) {
             String line;
-            SeminarSchedule seminarSchedule = new SeminarSchedule(LocalDate.now());
-
             while ((line = bufferedReader.readLine()) != null) {
-                seminarSchedule.process(line);
+                processSchedule.process(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
