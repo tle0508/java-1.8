@@ -9,6 +9,14 @@ public class Lunch implements Event {
         this.localTime = localTime;
     }
 
+    public LocalTime getLocalTime() {
+        return localTime;
+    }
+
+    public void setLocalTime(LocalTime localTime) {
+        this.localTime = localTime;
+    }
+
     @Override
     public void printDetail() {
         System.out.println(localTime.format(timeFormat) + " Lunch");

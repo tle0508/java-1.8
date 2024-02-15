@@ -29,8 +29,8 @@ class ProcessSchedule {
             .ofPattern("dd/MM/yyyy", new Locale("th", "TH"))
             .withChronology(ThaiBuddhistChronology.INSTANCE);
 
-    ProcessSchedule(LocalDate localDate) {
-        this.currentDate = localDate;
+    ProcessSchedule() {
+        this.currentDate = LocalDate.now();
         this.scheduleTime = LocalTime.of(MORNING_SESSION_HOUR, MORNING_SESSION_MINUTE);
         this.dayCounter = 1;
     }
@@ -40,8 +40,6 @@ class ProcessSchedule {
             ShowDateLine(line);
         } else if (line.matches(".*\\d+min")) {
             ShowSessionLine(line);
-        } else {
-            System.out.println(line);
         }
     }
 
