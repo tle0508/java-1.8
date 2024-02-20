@@ -12,38 +12,29 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
 
-class ProcessSchedule {
-    private static final int LUNCH_HOUR = 12;
-    private static final int NETWORKING_HOUR = 16;
-    private static final int NETWORKING_MINUTE = 0;
-    private static final int MORNING_SESSION_HOUR = 9;
-    private static final int MORNING_SESSION_MINUTE = 0;
-    private static final int AFTERNOON_SESSION_HOUR = 13;
-    private static final int AFTERNOON_SESSION_MINUTE = 0;
-    private LocalDate currentDate;
-    private LocalTime scheduleTime;
-    private int dayCounter;
+public class ProcessSchedule {
+    private LocalDate currentDate = LocalDate.now();
+    private LocalTime afternoonSession= LocalTime.of(13,0) ;
+    private LocalTime morningSession = LocalTime.of(9,0) ;
+
+    private LocalTime networkingEventTime  = LocalTime.of(16,59) ;
+    private LocalTime scheduleTime = morningSession ;
+    private int dayCounter =1;
 
     private DateTimeFormatter inputDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private DateTimeFormatter outputDateFormat = DateTimeFormatter
             .ofPattern("dd/MM/yyyy", new Locale("th", "TH"))
             .withChronology(ThaiBuddhistChronology.INSTANCE);
 
-    ProcessSchedule() {
-        this.currentDate = LocalDate.now();
-        this.scheduleTime = LocalTime.of(MORNING_SESSION_HOUR, MORNING_SESSION_MINUTE);
-        this.dayCounter = 1;
-    }
-
-    void process(String line) {
-        if (line.matches("\\w{4}-\\w{2}-\\w{2}")) {
-            ShowDateLine(line);
+    public void process(String line) {
+        if (line.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            showDateLine(line);
         } else if (line.matches(".*\\d+min")) {
-            ShowSessionLine(line);
+            showSessionLine(line);
         }
     }
 
-    private void ShowDateLine(String line) {
+    private void showDateLine(String line) {
         try {
             currentDate = LocalDate.parse(line, inputDateFormat);
             if (isWeekend(currentDate)) {
@@ -55,21 +46,22 @@ class ProcessSchedule {
         }
     }
 
-    private void ShowSessionLine(String line) {
+    private void showSessionLine(String line) {
         try {
             int duration = Integer.parseInt(line.replaceAll("\\D", ""));
             Event event;
-            if (scheduleTime.getHour() == LUNCH_HOUR) {
+            if (scheduleTime .equals(LocalTime.NOON)) {
                 event = new Lunch(scheduleTime);
                 event.printDetail();
-                scheduleTime = LocalTime.of(AFTERNOON_SESSION_HOUR, AFTERNOON_SESSION_MINUTE);
+                scheduleTime = afternoonSession;
             }
-            else if (scheduleTime.getHour() >= NETWORKING_HOUR) {
+            else if (scheduleTime.isAfter(networkingEventTime)) {
                 event = new NetworkingEvent(scheduleTime);
                 event.printDetail();
                 startNewDay();
             }
-            event = new Session(scheduleTime, line);
+            String sessionDescription = line.replaceAll("\\d+min", "").trim();
+            event = new Session(scheduleTime,sessionDescription,duration);
             event.printDetail();
             scheduleTime = scheduleTime.plusMinutes(duration);
         } catch (NumberFormatException e) {
@@ -84,7 +76,7 @@ class ProcessSchedule {
             currentDate = currentDate.plusDays(2);
         }
         System.out.println("Day " + dayCounter + " - " + currentDate.format(outputDateFormat) + " :");
-        scheduleTime = LocalTime.of(MORNING_SESSION_HOUR, MORNING_SESSION_MINUTE);
+        scheduleTime = morningSession;
     }
 
     private boolean isWeekend(LocalDate date) {
