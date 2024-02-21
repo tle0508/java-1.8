@@ -4,15 +4,18 @@ import exercise02.Event;
 import java.time.LocalTime;
 
 public class Session implements Event {
-    private final String line;
+    private final String info;
     private LocalTime localTime;
-    public Session(LocalTime startTime,String line) {
+    private int duration;
+    public Session(LocalTime startTime, String info, int duration) {
         this.localTime = startTime;
-        this.line = line;
+        this.info = info;
+        this.duration = duration;
     }
 
+
     @Override
-    public void printDetail() {
-        System.out.println(localTime.format(timeFormat) +" "+ line );
+    public String getDetail() {
+        return localTime.format(timeFormat) + " " + info + " " + duration + " min";
     }
 }

@@ -18,7 +18,7 @@ public class Lunch implements Event {
     }
 
     @Override
-    public void printDetail() {
-        System.out.println(localTime.format(timeFormat) + " Lunch");
+    public String getDetail() {
+        return (localTime.format(timeFormat) + " Lunch");
     }
 }

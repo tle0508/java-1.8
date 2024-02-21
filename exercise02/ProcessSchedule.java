@@ -10,6 +10,8 @@ import java.time.LocalTime;
 import java.time.chrono.ThaiBuddhistChronology;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class ProcessSchedule {
@@ -20,6 +22,7 @@ public class ProcessSchedule {
     private LocalTime networkingEventTime  = LocalTime.of(16,59) ;
     private LocalTime scheduleTime = morningSession ;
     private int dayCounter =1;
+    private static List<String> outputList = new ArrayList<>();
 
     private DateTimeFormatter inputDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private DateTimeFormatter outputDateFormat = DateTimeFormatter
@@ -40,7 +43,8 @@ public class ProcessSchedule {
             if (isWeekend(currentDate)) {
                 currentDate = currentDate.plusDays(2);
             }
-            System.out.println("Day " + dayCounter + " - " + currentDate.format(outputDateFormat) + " :");
+            String result = "Day " + dayCounter + " - " + currentDate.format(outputDateFormat) + " :";
+            outputList.add(result);
         } catch (DateTimeParseException e) {
             e.printStackTrace();
         }
@@ -52,17 +56,17 @@ public class ProcessSchedule {
             Event event;
             if (scheduleTime .equals(LocalTime.NOON)) {
                 event = new Lunch(scheduleTime);
-                event.printDetail();
+                outputList.add(event.getDetail());
                 scheduleTime = afternoonSession;
             }
             else if (scheduleTime.isAfter(networkingEventTime)) {
                 event = new NetworkingEvent(scheduleTime);
-                event.printDetail();
+                outputList.add(event.getDetail());
                 startNewDay();
             }
             String sessionDescription = line.replaceAll("\\d+min", "").trim();
             event = new Session(scheduleTime,sessionDescription,duration);
-            event.printDetail();
+            outputList.add(event.getDetail());
             scheduleTime = scheduleTime.plusMinutes(duration);
         } catch (NumberFormatException e) {
             e.printStackTrace();
@@ -75,13 +79,17 @@ public class ProcessSchedule {
         if (isWeekend(currentDate)) {
             currentDate = currentDate.plusDays(2);
         }
-        System.out.println("Day " + dayCounter + " - " + currentDate.format(outputDateFormat) + " :");
+        String result = "Day " + dayCounter + " - " + currentDate.format(outputDateFormat) + " :";
+        outputList.add(result);
         scheduleTime = morningSession;
     }
 
     private boolean isWeekend(LocalDate date) {
         DayOfWeek dayOfWeek = date.getDayOfWeek();
         return dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY;
+    }
+    public static List<String> AllOutput() {
+        return outputList;
     }
 }
 

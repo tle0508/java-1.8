@@ -10,7 +10,7 @@ public class NetworkingEvent implements Event {
         this.localTime = localTime;
     }
     @Override
-    public void printDetail() {
-        System.out.println(localTime.format(timeFormat) + " Networking Event" + "\n");
+    public String getDetail() {
+        return (localTime.format(timeFormat) + " Networking Event" + "\n");
     }
 }
