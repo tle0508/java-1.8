@@ -3,11 +3,11 @@ import exercise02.Event;
 
 import java.time.LocalTime;
 
-public class Session implements Event {
+public class SessionEvent implements Event {
     private final String info;
     private LocalTime localTime;
     private int duration;
-    public Session(LocalTime startTime, String info, int duration) {
+    public SessionEvent(LocalTime startTime, String info, int duration) {
         this.localTime = startTime;
         this.info = info;
         this.duration = duration;
@@ -16,6 +16,6 @@ public class Session implements Event {
 
     @Override
     public String getDetail() {
-        return localTime.format(timeFormat) + " " + info + " " + duration + " min";
+        return localTime.format(timeFormat) + " " + info + duration + " min";
     }
 }
