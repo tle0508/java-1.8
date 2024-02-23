@@ -1,28 +1,31 @@
-package exercise02.EventSession;
+package exercise02.DTO.process;
 
 import java.time.LocalTime;
 
-public class Schedule {
-    private LocalTime scheduleTime;
+public class ProcessSchedule {
+    private LocalTime time ;
     private String sessionDescription;
     private int duration;
 
-    public Schedule(LocalTime scheduleTime, String sessionDescription, int duration) {
-        this.scheduleTime = scheduleTime;
+    public ProcessSchedule() {
+    }
+
+    public ProcessSchedule(LocalTime time, String sessionDescription, int duration) {
+        this.time = time;
         this.sessionDescription = sessionDescription;
         this.duration = duration;
     }
 
-    public Schedule() {
+    public ProcessSchedule(LocalTime scheduleTime, String networkingTime) {
 
     }
 
-    public LocalTime getScheduleTime() {
-        return scheduleTime;
+    public LocalTime getTime() {
+        return time;
     }
 
-    public void setScheduleTime(LocalTime scheduleTime) {
-        this.scheduleTime = scheduleTime;
+    public void setTime(LocalTime time) {
+        this.time = time;
     }
 
     public String getSessionDescription() {

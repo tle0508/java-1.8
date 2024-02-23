@@ -1,32 +1,25 @@
 package exercise02;
 
-import exercise02.EventSession.SessionDay;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-
+import exercise02.DTO.process.ProcessData;
+import exercise02.DTO.read.SessionDay;
+import exercise02.service.PrintOutput;
+import exercise02.service.Process;
+import exercise02.service.ReadInput;
 
 
 public class SeminarApp {
     public static void main(String[] args) {
-        String filePath = "exercise02/input.txt";
-        ProcessSchedule processSchedule = new ProcessSchedule();
-        SessionDay sessionDay = new SessionDay();
-        try (
-                FileReader in = new FileReader(filePath);
-                BufferedReader bufferedReader = new BufferedReader(in);
-        ) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                processSchedule.process(line);
-            }
+        ReadInput reader = new ReadInput();
+        reader.read();
+        SessionDay sessionDay = reader.getSessionDay();
 
-            //System.out.println(ProcessSchedule.AllOutput());
-            //
-            ProcessSchedule.AllOutput().forEach(System.out::println);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Process the data
+        Process processSchedule = new Process();
+        processSchedule.process(sessionDay);
+
+        ProcessData processData = processSchedule.getProcessDataList();
+        // Print output
+        PrintOutput printOutput = new PrintOutput();
+        printOutput.print(processData.getProcessSessionDayList());
     }
 }

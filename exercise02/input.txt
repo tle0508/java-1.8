@@ -1,4 +1,4 @@
-2024-02-17
+2022-02-25
 Writing Fast Tests Against Enterprise Rails 60min
 Overdoing it in Python 45min
 Lua for the Masses 30min
@@ -18,4 +18,3 @@ Clojure Ate Scala (on my project) 45min
 A World Without HackerNews 30min
 Ruby on Rails: Why We Should Move On 60min
 Rails for Python Developers 5min
-
