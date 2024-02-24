@@ -10,25 +10,31 @@ import java.util.Locale;
 
 public class PrintOutput {
     private DateTimeFormatter outputDateFormat = DateTimeFormatter
-            .ofPattern("dd/MM/yyyy", new Locale("th", "TH"))
+            .ofPattern("dd/MM/yyyy")
             .withChronology(ThaiBuddhistChronology.INSTANCE);
     private DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("hh:mma");
 
-    public void print(List<ProcessSessionDay> processSessionDays) {
+    public String format(List<ProcessSessionDay> processSessionDays) {
+        StringBuilder formattedOutput = new StringBuilder();
         for (int i = 0; i < processSessionDays.size(); i++) {
             ProcessSessionDay processSessionDay = processSessionDays.get(i);
-            System.out.println("Day " + (i + 1) + ": " + processSessionDay.getDate().format(outputDateFormat));
+            formattedOutput.append("Day ").append(i + 1).append(": ").append(processSessionDay.getDate().format(outputDateFormat)).append("\n");
             for (ProcessSchedule processSchedule : processSessionDay.getProcessSchedule()) {
-                if (processSchedule.getDuration() == 0){
-                    System.out.println(processSchedule.getTime().format(timeFormat) + " " +
-                            processSchedule.getSessionDescription() + " ");
-                }else {
-                    System.out.println(processSchedule.getTime().format(timeFormat) + " " +
-                            processSchedule.getSessionDescription() + " " +
-                            processSchedule.getDuration() + " min");
+                if (processSchedule.getDuration() == 0) {
+                    formattedOutput.append(processSchedule.getTime().format(timeFormat)).append(" ")
+                            .append(processSchedule.getSessionDescription()).append(" ").append("\n");
+                } else {
+                    formattedOutput.append(processSchedule.getTime().format(timeFormat)).append(" ")
+                            .append(processSchedule.getSessionDescription()).append(" ")
+                            .append(processSchedule.getDuration()).append(" min").append("\n");
                 }
             }
-            System.out.println();
+            formattedOutput.append("\n");
         }
+        return formattedOutput.toString();
+    }
+    public void print(List<ProcessSessionDay> processSessionDays) {
+        String formattedOutput = format(processSessionDays);
+        System.out.println(formattedOutput);
     }
 }

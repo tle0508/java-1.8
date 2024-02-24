@@ -20,13 +20,13 @@ public class Process {
     private final LocalTime networkingEventTime  = LocalTime.of(16,59) ;
     private  LocalTime scheduleTime = morningSession ;
     ProcessData processData = new ProcessData();
-
     ProcessSessionDay processSessionDay = new ProcessSessionDay(currentDate, new ArrayList<>());
     public ProcessData getProcessDataList() {
         return processData;
     }
     public void process(SessionDay sessionDay) {
         currentDate = sessionDay.getDay();
+        processSessionDay.setDate(currentDate);
         for (Schedule schedule : sessionDay.getScheduleList()) {
             int duration = schedule.getDuration();
             // Check if lunchtime
