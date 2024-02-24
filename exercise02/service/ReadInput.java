@@ -7,12 +7,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.List;
 
 public class ReadInput {
-    String filePath = "exercise02/input.txt";
     public SessionDay sessionDay = new SessionDay();
     public void read(){
+        String filePath = "exercise02/input.txt";
         try (
                 FileReader in = new FileReader(filePath);
                 BufferedReader bufferedReader = new BufferedReader(in);

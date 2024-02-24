@@ -6,13 +6,13 @@ import exercise02.DTO.process.ProcessSessionDay;
 import java.time.chrono.ThaiBuddhistChronology;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
+
 
 public class PrintOutput {
-    private DateTimeFormatter outputDateFormat = DateTimeFormatter
+    private final DateTimeFormatter outputDateFormat = DateTimeFormatter
             .ofPattern("dd/MM/yyyy")
             .withChronology(ThaiBuddhistChronology.INSTANCE);
-    private DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("hh:mma");
+    private final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("hh:mma");
 
     public String format(List<ProcessSessionDay> processSessionDays) {
         StringBuilder formattedOutput = new StringBuilder();
