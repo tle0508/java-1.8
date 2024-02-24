@@ -14,7 +14,7 @@ public class ReadInput {
         String filePath = "exercise02/input.txt";
         try (
                 FileReader in = new FileReader(filePath);
-                BufferedReader bufferedReader = new BufferedReader(in);
+                BufferedReader bufferedReader = new BufferedReader(in)
         ) {
             String firstLine = bufferedReader.readLine();
             LocalDate day = LocalDate.parse(firstLine);
