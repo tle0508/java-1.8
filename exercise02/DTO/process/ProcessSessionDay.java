@@ -18,6 +18,10 @@ public class ProcessSessionDay {
     public ProcessSessionDay() {
     }
 
+    public ProcessSessionDay(LocalDate currentDate) {
+       this.date=currentDate;
+    }
+
 
     public LocalDate getDate() {
         return date;

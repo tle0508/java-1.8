@@ -1,12 +1,11 @@
 package exercise02.service;
 
-import exercise02.DTO.process.ProcessSchedule;
 import exercise02.DTO.process.ProcessSessionDay;
+import exercise02.DTO.process.ProcessSchedule;
 
 import java.time.chrono.ThaiBuddhistChronology;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
 
 public class PrintOutput {
     private final DateTimeFormatter outputDateFormat = DateTimeFormatter
@@ -14,27 +13,25 @@ public class PrintOutput {
             .withChronology(ThaiBuddhistChronology.INSTANCE);
     private final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("hh:mma");
 
-    public String format(List<ProcessSessionDay> processSessionDays) {
-        StringBuilder formattedOutput = new StringBuilder();
-        for (int i = 0; i < processSessionDays.size(); i++) {
-            ProcessSessionDay processSessionDay = processSessionDays.get(i);
-            formattedOutput.append("Day ").append(i + 1).append(": ").append(processSessionDay.getDate().format(outputDateFormat)).append("\n");
-            for (ProcessSchedule processSchedule : processSessionDay.getProcessSchedule()) {
-                if (processSchedule.getDuration() == 0) {
-                    formattedOutput.append(processSchedule.getTime().format(timeFormat)).append(" ")
-                            .append(processSchedule.getSessionDescription()).append(" ").append("\n");
-                } else {
-                    formattedOutput.append(processSchedule.getTime().format(timeFormat)).append(" ")
-                            .append(processSchedule.getSessionDescription()).append(" ")
-                            .append(processSchedule.getDuration()).append(" min").append("\n");
-                }
-            }
-            formattedOutput.append("\n");
-        }
-        return formattedOutput.toString();
+    public void print(List<ProcessSessionDay> processSessionDayList) {
+        processSessionDayList.forEach(this::printSessionDay);
     }
-    public void print(List<ProcessSessionDay> processSessionDays) {
-        String formattedOutput = format(processSessionDays);
-        System.out.println(formattedOutput);
+
+    private void printSessionDay(ProcessSessionDay sessionDay) {
+        System.out.println(sessionDay.getDate().format(outputDateFormat));
+        sessionDay.getProcessSchedule().forEach(this::printSchedule);
+        System.out.println();
+    }
+
+    private void printSchedule(ProcessSchedule schedule) {
+        String startTime = schedule.getTime().format(timeFormat);
+        String sessionDescription = schedule.getSessionDescription();
+        String duration;
+        if (schedule.getDuration() != null) {
+            duration = schedule.getDuration() + "min";
+        } else {
+            duration = "";
+        }
+        System.out.println(startTime + " " + sessionDescription + " " + duration);
     }
 }

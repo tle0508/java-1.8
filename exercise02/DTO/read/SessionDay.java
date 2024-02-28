@@ -8,9 +8,7 @@ public class SessionDay {
     private LocalDate day ;
     private List<Schedule> data = new ArrayList<>();
 
-    public SessionDay() {
 
-    }
 
     public LocalDate getDay() {
         return day;

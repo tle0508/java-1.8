@@ -5,12 +5,12 @@ import java.time.LocalTime;
 public class ProcessSchedule {
     private LocalTime time ;
     private String sessionDescription;
-    private int duration;
+    private Integer duration;
 
     public ProcessSchedule() {
     }
 
-    public ProcessSchedule(LocalTime time, String sessionDescription, int duration) {
+    public ProcessSchedule(LocalTime time, String sessionDescription, Integer duration) {
         this.time = time;
         this.sessionDescription = sessionDescription;
         this.duration = duration;
@@ -36,11 +36,11 @@ public class ProcessSchedule {
         this.sessionDescription = sessionDescription;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 }

@@ -4,8 +4,8 @@ import java.time.LocalTime;
 
 public class Schedule {
 
-    private String sessionDescription;
-    private int duration;
+    private final String sessionDescription;
+    private final int duration;
 
     public Schedule( String sessionDescription, int duration) {
 
@@ -13,23 +13,15 @@ public class Schedule {
         this.duration = duration;
     }
 
-    public Schedule() {
-    }
 
     public String getSessionDescription() {
         return sessionDescription;
-    }
-
-    public void setSessionDescription(String sessionDescription) {
-        this.sessionDescription = sessionDescription;
     }
 
     public int getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
+
 
 }
