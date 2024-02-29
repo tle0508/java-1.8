@@ -14,11 +14,13 @@ public class PrintOutput {
     private final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("hh:mma");
 
     public void print(List<ProcessSessionDay> processSessionDayList) {
-        processSessionDayList.forEach(this::printSessionDay);
+        for (int i = 0; i < processSessionDayList.size(); i++) {
+            printSessionDay(processSessionDayList.get(i), i+1);
+        }
     }
 
-    private void printSessionDay(ProcessSessionDay sessionDay) {
-        System.out.println(sessionDay.getDate().format(outputDateFormat));
+    private void printSessionDay(ProcessSessionDay sessionDay, int dayNumber) {
+        System.out.println("Day " +dayNumber + " : " +sessionDay.getDate().format(outputDateFormat));
         sessionDay.getProcessSchedule().forEach(this::printSchedule);
         System.out.println();
     }

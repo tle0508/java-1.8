@@ -28,7 +28,7 @@ public class ReadInput {
                 sessionDay.getScheduleList().add(schedule);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("error: " + e.getMessage());
         }
         return sessionDay;
     }
